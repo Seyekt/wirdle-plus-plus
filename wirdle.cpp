@@ -53,27 +53,37 @@ int main () {
 	bool end = false;
 
 	string answer = "REACT";
-	cout << "The answer is: " << answer << '\n';
+	//cout << "The answer is: " << answer << '\n';
 
 	cout << "_____\n";
 
 	string userInput;
 	
-	while(!end) {
+	for(int turns = 6; turns > 0 && !end; turns--) {
+
+		cout << "Turns Left: " << turns << '\n';
 
 		fill_n(wirdle, 5, false);
 
-		cout << "Enter your answer: " << '\n';
+		cout << "Enter your answer: \n";
 
 		cin >> userInput;
 
-		if (compareString(answer, userInput)){
+		transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper); // make uppercase
+
+		lettersPresent(answer, userInput);
+
+		if (answer == userInput){
 			cout << "Right answer!";
 			end = true;
 		} else {
-			cout << "Wrong answer!" << '\n';
+			cout << "Wrong answer! \n";
 			cout << "Letters correct: " << lettersPresent(answer, userInput) << '\n';
 			printWirdle(answer);
+		}
+
+		if (turns <= 1) {
+			cout << "Out of time!" << '\n';
 		}
 
 	}
