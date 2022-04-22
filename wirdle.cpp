@@ -1,18 +1,33 @@
 //#include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
 bool wirdle [5];
 
-bool compareString(string one, string two) {
+string chooseAnswer() {
 
-	if (one == two) 
-		return true;
+	string fileInput;
 
-	return false;
+	ifstream answerFile("answers.txt");
+	
+	vector<string> lines;
+
+	for(string line; getline(answerFile, fileInput);) {
+
+		line = fileInput.c_str();
+		lines.push_back(line);
+
+	}
+	
+	answerFile.close();
+
+	return lines[rand() % lines.size()];
+
 }
 
 int lettersPresent(string answer, string input) {
@@ -36,7 +51,7 @@ int lettersPresent(string answer, string input) {
 
 void printWirdle (string answer) {
 
-	for (size_t i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) {
 
 		if (wirdle[i]) {
 			cout << answer.at(i);
@@ -50,16 +65,16 @@ void printWirdle (string answer) {
 
 int main () {
 
-	bool end = false;
+	bool won = false;
 
-	string answer = "REACT";
+	string answer = chooseAnswer();
 	//cout << "The answer is: " << answer << '\n';
 
 	cout << "_____\n";
 
 	string userInput;
 	
-	for(int turns = 6; turns > 0 && !end; turns--) {
+	for(int turns = 6; turns > 0 && !won; turns--) {
 
 		cout << "Turns Left: " << turns << '\n';
 
@@ -75,7 +90,7 @@ int main () {
 
 		if (answer == userInput){
 			cout << "Right answer!";
-			end = true;
+			won = true;
 		} else {
 			cout << "Wrong answer! \n";
 			cout << "Letters correct: " << lettersPresent(answer, userInput) << '\n';
